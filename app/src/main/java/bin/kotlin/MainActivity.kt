@@ -1,5 +1,6 @@
 package bin.kotlin
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -7,18 +8,13 @@ import bin.kotlin.http.GlideApp
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*;
 import okhttp3.*
-import org.jetbrains.anko.doAsync
 import java.io.IOException
 import okhttp3.FormBody
-import org.jetbrains.anko.uiThread
 import android.widget.Toast
 import bin.kotlin.VO.UserVO
+import bin.kotlin.ui.ListActivity
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
-
-
-
-
 
 
 class MainActivity : AppCompatActivity() {
@@ -29,20 +25,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         GlideApp.with(this)
-                .load("http://192.168.0.120:8081/afd.jpg")
+                .load("http://119.23.234.169:8081/afd.jpg")
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher)
                 .centerCrop()
                 .into(imageView)
 
         button.setOnClickListener{
-//            doAsync {
-//               val re = bin.kotlin.http.Request("http://192.168.0.120:8081/getUserList").get()
-//                uiThread {
-//                    Log.d(javaClass.simpleName,re.toString())
-//                }
-//            }
-            postJson()
+            val inten = Intent()
+            inten.setClass(this@MainActivity,ListActivity::class.java)
+            startActivity(inten)
         }
     }
 
@@ -51,7 +43,7 @@ class MainActivity : AppCompatActivity() {
      */
     private fun getAsynHttp() {
         var mOkHttpClient = OkHttpClient()
-        val requestBuilder = Request.Builder().url("http://www.baidu.com")
+        val requestBuilder = Request.Builder().url("http://119.23.234.169:8081")
         //可以省略，默认是GET请求
         requestBuilder.method("GET", null)
         val request = requestBuilder.build()
@@ -85,7 +77,7 @@ class MainActivity : AppCompatActivity() {
                 .add("id", "10")
                 .build()
         val request = Request.Builder()
-                .url("http://192.168.0.120:8081/getUserById")
+                .url("http://119.23.234.169:8081/getUserById")
                 .post(formBody)
                 .build()
         val call = mOkHttpClient.newCall(request)
@@ -112,7 +104,7 @@ class MainActivity : AppCompatActivity() {
      */
     @Throws(IOException::class)
     private fun postJson() {
-        val url = "http://192.168.0.120:8081/getUser"
+        val url = "http://119.23.234.169:8081/getUser"
         val json = "{\"id\":13}";
 
         val client = OkHttpClient()
